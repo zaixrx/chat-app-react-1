@@ -1,19 +1,38 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import * as reactDom from "react-router-dom";
 
-import Room from "./Pages/Room";
 import Main from "./Pages/Main";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import PrivateRoute from "./Utils/PrivateRoute";
+
+import { AuthenticationProvider } from "./Context/AuthenticationContext";
+import Room from "./Pages/Room";
+
+const { Routes, Route } = reactDom;
 
 export default function App() {
   return (
-    <Router>
+    <AuthenticationProvider>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/room/:roomName" element={<Room />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Main />
+            </PrivateRoute>
+          }
+        />
+        <Route 
+          path="room/:roomName"
+          element={
+            <PrivateRoute>
+              <Room />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/signup" element={<Register />} />
       </Routes>
-    </Router>
+    </AuthenticationProvider>
   )
 }

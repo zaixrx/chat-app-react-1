@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Rooms from "../Components/Rooms"
 
 export default function Main() {
+
     const navigate = useNavigate();
     const handleRoomConnect = () => {
         const roomName : string = (document.getElementById("roomInput") as HTMLInputElement).value;

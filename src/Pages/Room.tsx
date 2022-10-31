@@ -2,8 +2,9 @@ import * as react from "react";
 import * as reactRouterDom from "react-router-dom";
 
 import axios from "axios";
+import AuthenticationContext from "../Context/AuthenticationContext";
 
-const { useState, useEffect } = react;
+const { useState, useEffect, useContext } = react;
 const { useParams } = reactRouterDom;
 
 export default function Room() {
@@ -12,7 +13,8 @@ export default function Room() {
         name: "",
     });
     const { roomName } = useParams();
-    
+    const { user } = useContext(AuthenticationContext);
+
     const chatLogs : HTMLInputElement = document.getElementById("chatLogs") as HTMLInputElement;
     const chatInput : HTMLInputElement = document.getElementById("chatInput") as HTMLInputElement;
     
@@ -56,8 +58,10 @@ export default function Room() {
     const sendMessage = () => {
         if (chatInput.value.length === 0 || chatSocket === null) return;
         
+        console.log(user.username);
+
         chatSocket.send(JSON.stringify({
-            "message": chatInput.value,
+            "message": `${user.username}: ${chatInput.value}`,
         }));
 
         chatInput.value = "";
